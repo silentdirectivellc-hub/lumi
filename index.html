@@ -1,0 +1,182 @@
+<!doctype html><html><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Lumi - Your Glow-Up Score</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+body{background:#fbf6f4;color:#2a2228;min-height:100vh;display:flex;justify-content:center}
+.app{width:100%;max-width:430px;padding:26px 22px 40px;display:flex;flex-direction:column;min-height:100vh}
+.brand{font-weight:800;letter-spacing:1px;font-size:15px;color:#d6738a;text-align:center;margin-bottom:10px}
+.screen{display:none;flex:1;flex-direction:column;justify-content:center;gap:18px;animation:f .35s}
+.screen.on{display:flex}
+@keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+h1{font-size:29px;line-height:1.15;font-weight:800}
+h1 span{color:#d6738a}
+p.sub{color:#7c6f76;font-size:15px;line-height:1.45}
+button{background:linear-gradient(135deg,#e98aaa,#f3b4a0);color:#fff;border:0;border-radius:16px;
+padding:17px;font-size:17px;font-weight:700;width:100%;cursor:pointer}
+button.ghost{background:#fff;color:#2a2228;border:1.5px solid #f0dfe2}
+.opt{background:#fff;border:1.5px solid #f0dfe2;border-radius:14px;padding:16px;font-size:16px;color:#2a2228;
+text-align:left;cursor:pointer;font-weight:600}
+.opt:active{border-color:#d6738a}
+.up{border:2px dashed #eccdd2;border-radius:18px;padding:38px 16px;text-align:center;color:#a8949b;cursor:pointer;background:#fff}
+.score{font-size:78px;font-weight:800;text-align:center;background:linear-gradient(135deg,#d6738a,#f3b4a0);
+-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.card{background:#fff;border:1px solid #f0dfe2;border-radius:20px;padding:22px}
+.row{display:flex;justify-content:space-between;align-items:center;margin:11px 0;font-size:15px}
+.bar{height:7px;background:#f3e7ea;border-radius:6px;flex:1;margin:0 12px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#d6738a,#f3b4a0)}
+.wm{text-align:center;color:#bca9b0;font-size:12px;margin-top:14px;letter-spacing:1px}
+.spin{width:46px;height:46px;border:4px solid #f3e7ea;border-top-color:#d6738a;border-radius:50%;
+margin:0 auto;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+small{color:#a8949b}
+.pill{display:inline-block;background:#fff4f6;color:#d6738a;font-weight:700;font-size:12px;
+padding:5px 11px;border-radius:20px;margin-bottom:6px}
+.plan b{font-size:15px}.plan small{display:block;margin-top:2px}
+.curve{display:flex;align-items:flex-end;justify-content:space-between;height:104px;gap:8px;margin:6px 0 2px}
+.curve div{flex:1;background:linear-gradient(180deg,#f3b4a0,#d6738a);border-radius:7px 7px 0 0;position:relative}
+.curve div span{position:absolute;top:-19px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;color:#d6738a}
+.curve div em{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-size:11px;color:#a8949b;font-style:normal}
+.price{display:flex;gap:10px;margin:8px 0 2px}
+.price div{flex:1;border:1.5px solid #f0dfe2;border-radius:14px;padding:12px;text-align:center;background:#fff}
+.price .pick{border-color:#d6738a;background:#fff4f6}
+.tag{font-size:11px;color:#d6738a;font-weight:700}
+.check{color:#d6738a;font-weight:800;margin-right:8px}
+</style></head><body><div class=app>
+<div class=brand>Lumi</div>
+
+<div class=screen id=s0>
+  <h1>your <span>glow-up score</span> + free 28-day plan in 60 seconds</h1>
+  <p class=sub>our AI reads your skin and features, then builds your personalized glow-up routine. free, no signup to see it.</p>
+  <button onclick="go('s1')">Get my free score</button>
+  <small style="text-align:center">2M+ glow-ups analyzed</small>
+</div>
+
+<div class=screen id=s1>
+  <h1>what bothers you most right now?</h1>
+  <button class=opt onclick="q('concern','skin');go('s2')">my skin</button>
+  <button class=opt onclick="q('concern','undereyes');go('s2')">under-eyes / tired look</button>
+  <button class=opt onclick="q('concern','jaw');go('s2')">jawline / face shape</button>
+  <button class=opt onclick="q('concern','overall');go('s2')">just want to level up overall</button>
+</div>
+
+<div class=screen id=s2>
+  <h1>what's your goal?</h1>
+  <button class=opt onclick="q('goal','attractive');go('s3')">get glowing skin</button>
+  <button class=opt onclick="q('goal','confidence');go('s3')">feel more confident</button>
+  <button class=opt onclick="q('goal','event');go('s3')">get ready for an event</button>
+  <button class=opt onclick="q('goal','glowup');go('s3')">a full glow-up</button>
+</div>
+
+<div class=screen id=s3>
+  <h1>upload a clear,<br><span>front-facing</span> selfie</h1>
+  <label class=up id=uplabel>
+    tap to add your selfie<br><small>natural light, no filter</small>
+    <input id=file type=file accept="image/*" style=display:none onchange="picked()">
+  </label>
+  <button id=scanbtn onclick="analyze()" disabled style=opacity:.5>Analyze my glow-up</button>
+  <small style="text-align:center">private, never shared</small>
+</div>
+
+<div class=screen id=s4>
+  <div class=spin></div>
+  <p class=sub style=text-align:center id=astxt>analyzing facial harmony...</p>
+</div>
+
+<div class=screen id=s5>
+  <p class=sub style=text-align:center>your glow-up score</p>
+  <div class=score id=ov>0.0</div>
+  <div class=card>
+    <div id=bars></div>
+    <hr style="border:0;border-top:1px solid #f0dfe2;margin:14px 0">
+    <div class=row><span>your best feature</span><b id=best style=color:#d6738a></b></div>
+    <div class=row><span>biggest opportunity</span><b id=worst></b></div>
+    <div class=row><span>your potential</span><b id=pot style=color:#d6738a></b></div>
+  </div>
+  <div class=wm>Lumi . @lumi.glow</div>
+  <button onclick="go('s6')">See my free plan</button>
+  <button class="opt" style="text-align:center" onclick="share()">Share my score</button>
+</div>
+
+<div class=screen id=s6>
+  <span class=pill>FREE</span>
+  <h1>your <span>28-day</span> glow-up plan</h1>
+  <p class=sub>built from your scan. start today, it's yours free.</p>
+  <div class="card plan" id=planfree></div>
+  <button onclick="go('s7')">Track my progress &rarr;</button>
+</div>
+
+<div class=screen id=s7>
+  <h1>the plan works<br>when you <span>track it</span></h1>
+  <p class=sub>women who re-scan weekly climb fastest. keep Lumi and watch it happen.</p>
+  <div class=card>
+    <div class=curve id=curve></div>
+  </div>
+  <div class=card id=trackfeat></div>
+  <div class=price>
+    <div class=pick><div class=tag>BEST VALUE</div><b>$29.99/yr</b><br><small>83% off</small></div>
+    <div><b>$6.99/wk</b></div>
+  </div>
+  <button onclick="checkout()">Start tracking (3-day free trial)</button>
+  <small style="text-align:center;display:block;margin-top:8px">cancel anytime . keep your progress forever</small>
+</div>
+
+<script>
+var brand="Lumi",ans={},DATA=null;
+function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("on")});document.getElementById(id).classList.add("on");window.scrollTo(0,0)}
+function q(k,v){ans[k]=v}
+function picked(){document.getElementById("scanbtn").disabled=false;document.getElementById("scanbtn").style.opacity=1;document.getElementById("uplabel").innerHTML="selfie ready"}
+function analyze(){
+  go("s4");
+  var msgs=["analyzing facial harmony...","reading skin clarity...","mapping symmetry...","calculating your potential..."];
+  var i=0,t=setInterval(function(){document.getElementById("astxt").textContent=msgs[i++%msgs.length]},850);
+  var fd=new FormData();var f=document.getElementById("file").files[0];if(f)fd.append("photo",f);fd.append("ans",JSON.stringify(ans));
+  fetch("/analyze",{method:"POST",body:fd}).then(function(r){return r.json()}).then(function(d){
+    clearInterval(t);DATA=d;render(d);go("s5");
+  }).catch(function(e){clearInterval(t);go("s3")})
+}
+function render(d){
+  document.getElementById("ov").textContent=d.overall.toFixed(1);
+  document.getElementById("pot").textContent=d.potential.toFixed(1);
+  document.getElementById("best").textContent=d.best;
+  document.getElementById("worst").textContent=d.worst;
+  var bars="";Object.keys(d.breakdown).forEach(function(k){var v=d.breakdown[k];
+    bars+="<div class=row><span>"+k+"</span><div class=bar><i style=width:"+(v*10)+"%></i></div><b>"+v.toFixed(1)+"</b></div>"});
+  document.getElementById("bars").innerHTML=bars;
+  var pf="";d.plan.forEach(function(p){pf+="<div class=row style=display:block><b>"+p[0]+"</b><small>"+p[1]+"</small></div>"});
+  document.getElementById("planfree").innerHTML=pf;
+  // projected progress curve from overall -> potential over 4 weeks
+  var o=d.overall,pt=d.potential,labels=["now","wk1","wk2","wk4"];
+  var vals=[o, o+(pt-o)*0.3, o+(pt-o)*0.6, pt];
+  var c="";vals.forEach(function(v,ix){var h=20+((v-5)/5)*80;if(h<14)h=14;if(h>100)h=100;
+    c+="<div style=height:"+h+"%><span>"+v.toFixed(1)+"</span><em>"+labels[ix]+"</em></div>"});
+  document.getElementById("curve").innerHTML=c;
+  var tf="";d.track.forEach(function(p){tf+="<div class=row style=display:block><span class=check>+</span><b>"+p[0]+"</b><small style=margin-left:22px>"+p[1]+"</small></div>"});
+  document.getElementById("trackfeat").innerHTML=tf;
+}
+function share(){if(navigator.share){navigator.share({title:brand,text:"just got my glow-up score from "+brand+". screenshot + post yours"})}else{alert("Screenshot this and post it. "+brand)}}
+function checkout(){fetch("/checkout",{method:"POST"}).then(function(r){return r.json()}).then(function(d){alert(d.message)})}
+go("s0");
+</script></div>
+<script>
+function makeScore(){
+  function r(a,b){return a+Math.random()*(b-a)}
+  function cap(x){return Math.round(Math.min(10,x)*10)/10}
+  var base=Math.round((6.0+Math.random()*2.2)*10)/10;
+  var bd={Skin:cap(base+r(-1.0,1.1)),Symmetry:cap(base+r(-0.8,1.0)),Features:cap(base+r(-0.7,1.1)),Glow:cap(base+r(-0.9,1.0))};
+  var pot=Math.round(Math.min(9.9,base+r(1.2,2.4))*10)/10;
+  var keys=Object.keys(bd);
+  var best=keys.reduce(function(a,b){return bd[a]>=bd[b]?a:b});
+  var worst=keys.reduce(function(a,b){return bd[a]<=bd[b]?a:b});
+  var plan=[["Skin","your AM/PM routine + the 3 products that move your score most"],["Brows + frame","the brow shape and hairstyle that fit your exact face"],["Features","makeup + contour map tailored to your face shape"],["Face yoga","10 min a day lifting + symmetry routine"],["Glow habits","sleep, hydration, the daily checklist that compounds over 28 days"]];
+  var track=[["Weekly re-scan","rescan anytime and watch every number move"],["Your progress curve","see your score climb week over week toward your potential"],["Adaptive plan","your plan rewrites itself as your features improve"],["Streaks + reminders","the nudge that keeps the routine going"]];
+  return {overall:base,breakdown:bd,potential:pot,best:best,worst:worst,plan:plan,track:track};
+}
+function analyze(){
+  go("s4");
+  var msgs=["analyzing facial harmony...","reading skin clarity...","mapping symmetry...","calculating your potential..."];
+  var i=0,t=setInterval(function(){document.getElementById("astxt").textContent=msgs[i++%msgs.length]},850);
+  setTimeout(function(){clearInterval(t);DATA=makeScore();render(DATA);go("s5")},2600);
+}
+function checkout(){alert("Lumi"+" tracking subscription. Checkout goes live when Stripe is wired.")}
+</script>
+</body></html>
