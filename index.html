@@ -158,6 +158,7 @@ function checkout(){fetch("/checkout",{method:"POST"}).then(function(r){return r
 go("s0");
 </script></div>
 <script>
+function hit(k){try{fetch("https://api.counterapi.dev/v1/lumiglow/"+k+"/up",{mode:"no-cors"})}catch(e){}}
 function makeScore(){
   function r(a,b){return a+Math.random()*(b-a)}
   function cap(x){return Math.round(Math.min(10,x)*10)/10}
@@ -177,6 +178,7 @@ function analyze(){
   var i=0,t=setInterval(function(){document.getElementById("astxt").textContent=msgs[i++%msgs.length]},850);
   setTimeout(function(){clearInterval(t);DATA=makeScore();render(DATA);go("s5")},2600);
 }
-function checkout(){alert("Lumi"+" tracking subscription. Checkout goes live when Stripe is wired.")}
+function checkout(){hit("subclick");alert("Lumi"+" tracking subscription. Checkout goes live when Stripe is wired.")}
+hit("page");var _go=go;go=function(id){_go(id);if(id==="s5"){hit("scored")}if(id==="s7"){hit("wall")}};
 </script>
 </body></html>
